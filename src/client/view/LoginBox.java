@@ -1,12 +1,10 @@
 package client.view;
 
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,14 +19,12 @@ public class LoginBox extends JDialog {
 
 	// Attributes
 	private final Controller controller;
-	private ComboBoxRenderer renderer;
-
 	// Attributes : UI
 	private JTextField nickTextField;
+	private JTextField passwordTextField;
 	private JLabel lblNewLabel;
+	private JLabel passwordLabel;
 
-	// Constructor
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public LoginBox(Controller controller) {
 		//TODO Daæ jakiegoœ FloatLayouta zrobiæ pole na has³o
 		this.controller = controller;
@@ -58,11 +54,20 @@ public class LoginBox extends JDialog {
 		nickTextField.setBounds(55, 21, 143, 20);
 		panel.add(nickTextField);
 		nickTextField.setColumns(10);
+		
+		passwordLabel = new JLabel("Password : ");
+		passwordLabel.setBounds(10, 54, 35, 14);
+		panel.add(passwordLabel);
+		
+		passwordTextField = new JTextField();
+		passwordTextField.setBounds(55, 51, 143, 20);
+		panel.add(passwordTextField);
+		passwordTextField.setColumns(10);
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				LoginBox.this.controller.receivedLoginData(nickTextField.getText());
+				LoginBox.this.controller.receivedLoginData(nickTextField.getText(), passwordTextField.getText());
 			}
 		});
 		okButton.setBounds(69, 110, 89, 23);

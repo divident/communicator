@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import server.beans.Message;
+import server.util.Database;
 
 public class ConnectionHandler implements Runnable {
 
@@ -59,7 +60,7 @@ public class ConnectionHandler implements Runnable {
 			Message registrationMessage = (Message) inputObject.readObject();
 			setUserNick(registrationMessage.getNickFrom());
 
-			isRegistered = registerNewUser(registrationMessage.getNickFrom(), outputObject);
+			isRegistered = loginUser(registrationMessage.getNickFrom(), registrationMessage.getNickTo(), outputObject);
 
 			if (isRegistered == false)
 				outputObject.writeObject(new Message("brak", "brak", "wrongNick"));
@@ -89,9 +90,10 @@ public class ConnectionHandler implements Runnable {
 		} while (true);
 	}
 
-	public boolean registerNewUser(String userNick, ObjectOutputStream outputObject) throws IOException {
-		if (usersOutputMap.containsKey(userNick)) {
-			LOGGER.info("Register with given nick exist");
+	public boolean loginUser(String userNick, String password, ObjectOutputStream outputObject) throws IOException {
+		Database db = new Database();
+		if (!db.checkUser(userNick, password) || usersOutputMap.containsKey(userNick)) {
+			LOGGER.info("Wrong username or password");
 			return false;
 		} else {
 			LOGGER.info("Sending about available users");

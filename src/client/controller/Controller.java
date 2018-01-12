@@ -150,9 +150,9 @@ public class Controller implements PropertyChangeListener {
 
 	}
 
-	public void receivedLoginData(String userLoginNick) {
+	public void receivedLoginData(String userLoginNick, String password) {
 
-		Message message = new Message(null, userLoginNick, "brak");
+		Message message = new Message(password, userLoginNick, "brak");
 		((SendDataModel) modelsMap.get("sendDataModel")).sendData(message);
 	}
 

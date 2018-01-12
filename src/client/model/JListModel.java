@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import server.Server;
 import server.beans.Message;
 
 public class JListModel extends AbstractModel{
