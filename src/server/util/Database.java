@@ -26,7 +26,7 @@ public class Database {
 			pstmt.setString(1, username);
 			pstmt.setString(2, password);
 
-			ResultSet rs = pstmt.executeQuery(sql);
+			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				String user = rs.getString("USERNAME");
 				String pass = rs.getString("PASSWORD");
@@ -39,6 +39,7 @@ public class Database {
 			connection.close();
 		} catch (Exception e) {
 			LOGGER.warning("Failed to query database");
+			e.printStackTrace();
 		}
 		return false;
 	}
