@@ -14,9 +14,6 @@ import javax.swing.ListCellRenderer;
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 public class ComboBoxRenderer extends JLabel implements ListCellRenderer{
-
-
-	
 	
 	// Constructor 
 	public ComboBoxRenderer() {

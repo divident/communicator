@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import client.ClientLocale;
 import client.controller.Controller;
  
 @SuppressWarnings("serial")
@@ -24,10 +25,9 @@ public class LoginBox extends JDialog {
         this.controller.setLoginBoxView(this);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
- 
         cs.fill = GridBagConstraints.HORIZONTAL;
  
-        lbUsername = new JLabel("Username: ");
+        lbUsername = new JLabel();
         cs.gridx = 0;
         cs.gridy = 0;
         cs.gridwidth = 1;
@@ -39,7 +39,7 @@ public class LoginBox extends JDialog {
         cs.gridwidth = 2;
         panel.add(tfUsername, cs);
  
-        lbPassword = new JLabel("Password: ");
+        lbPassword = new JLabel();
         cs.gridx = 0;
         cs.gridy = 1;
         cs.gridwidth = 1;
@@ -52,7 +52,7 @@ public class LoginBox extends JDialog {
         panel.add(pfPassword, cs);
         panel.setBorder(new LineBorder(Color.GRAY));
  
-        btnLogin = new JButton("Login");
+        btnLogin = new JButton();
  
         btnLogin.addActionListener(new ActionListener() {
  
@@ -60,7 +60,7 @@ public class LoginBox extends JDialog {
               controller.receivedLoginData(tfUsername.getText(), new String(pfPassword.getPassword()));
             }
         });
-        btnCancel = new JButton("Cancel");
+        btnCancel = new JButton();
         btnCancel.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
@@ -73,12 +73,19 @@ public class LoginBox extends JDialog {
  
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
+        changeText();
         pack();
     	setModal(true);                                     
 		setVisible(true);
         setResizable(false);
     }
- 
+    
+    public void changeText() {
+    	btnCancel.setText(ClientLocale.getMessage("btCancel"));
+    	btnLogin.setText(ClientLocale.getMessage("btLogin"));
+    	lbUsername.setText(ClientLocale.getMessage("lbUsername"));
+    	lbPassword.setText(ClientLocale.getMessage("lbPassword"));
+    }
     public String getUsername() {
         return tfUsername.getText().trim();
     }
@@ -89,7 +96,7 @@ public class LoginBox extends JDialog {
  
     public void wrongNick() {
     	   JOptionPane.showMessageDialog(LoginBox.this,
-                   "Invalid username or password",
+                   ClientLocale.getMessage("loginError"),
                    "Login",
                    JOptionPane.ERROR_MESSAGE);
     }

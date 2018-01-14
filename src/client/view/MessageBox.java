@@ -16,6 +16,8 @@ import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import client.ClientLocale;
 import client.controller.Controller;
 
 @SuppressWarnings("serial")
@@ -56,11 +58,9 @@ public class MessageBox extends JFrame {
 		setWindowsComponent();
 		setActionLIsteners();
 		
-		// Dodanie nowej wiadomosci do okna wiadomosci 
 		try{
-			this.addNewMessage(receivedMessage);
+			this.addNewMessage(receivedMessage, userConversation);
 		}catch(Exception ex){
-			/* handle exception*/
 			ex.printStackTrace();
 		}
 	} 
@@ -68,16 +68,14 @@ public class MessageBox extends JFrame {
 	
 	private void setWindowsComponent(){
 		
-		// Set Window details 
 		getContentPane().setFont(new Font("Arial", Font.PLAIN, 11));
-		setTitle("MessageBox | Rozmowa z : " + userWindowOwner);
 		setBounds(100, 100, 459, 409);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(null);
 		this.setLocationRelativeTo(controller.getMessengerView());  
 		
 	    panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Conversation", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		panel.setBounds(16, 11, 405, 217);
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -105,9 +103,11 @@ public class MessageBox extends JFrame {
 		scrollPane.setViewportView(messageJTextPane);
 		messageJTextPane.setMargin(new Insets(15, 15, 5, 5));
 		
-		sendButton = new JButton(" Send");
+		sendButton = new JButton();
 		sendButton.setBounds(328, 337, 93, 23);
 		getContentPane().add(sendButton);
+		
+		changeText();
 		
 	}
 	
@@ -116,11 +116,8 @@ public class MessageBox extends JFrame {
 		
 		sendButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
-				LOGGER.info("Sending message to" + userWindowOwner);
-
+				LOGGER.info("Sending message to " + userWindowOwner);
 				controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText()); 
-				
-
 			}
 		});
 		
@@ -134,8 +131,12 @@ public class MessageBox extends JFrame {
 		});
 	}
 	
-	public void addNewMessage(String messageText) {
-		conversationJTextPane.setText(conversationJTextPane.getText() + '\n' + messageText);
+	public void changeText() {
+		sendButton.setText(ClientLocale.getMessage("btSend"));
+		setTitle(ClientLocale.getMessage("titMessageBox") + " " + userWindowOwner);
+	}
+	public void addNewMessage(String messageText, String userFrom) {
+		conversationJTextPane.setText(conversationJTextPane.getText() + '\n' + "<" + userFrom + "> " + messageText );
 	}
 	public void eraseMessageJTextPane(){
 		messageJTextPane.setText("");

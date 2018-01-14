@@ -40,8 +40,6 @@ public class Client {
 			}
 		};
 		EventQueue.invokeLater(runnable);
-		System.out.println("Widok - OK");
-
 	}
 
 }

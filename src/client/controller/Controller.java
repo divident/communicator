@@ -48,7 +48,7 @@ public class Controller implements PropertyChangeListener {
 		messageBox.eraseMessageJTextPane();
 
 		try {
-			messageBox.addNewMessage(messageText);
+			messageBox.addNewMessage(messageText, message.getNickFrom());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class Controller implements PropertyChangeListener {
 					MessageBox messageBox = messageBoxesMap.get(message.getNickFrom());
 					messageBox.setVisible(true);
 					try {
-						messageBox.addNewMessage(message.getMessage());
+						messageBox.addNewMessage(message.getMessage(), message.getNickFrom());
 					} catch (Exception e) {
 						LOGGER.warning("Error while sending message");
 					}
@@ -191,5 +191,13 @@ public class Controller implements PropertyChangeListener {
 
 	public void setUserNick(String userNick) {
 		this.userNick = userNick;
+	}
+	
+	public void changeLanguage() {
+		this.loginBoxView.changeText();
+		for(Map.Entry<String, MessageBox> messageBox : messageBoxesMap.entrySet()) {
+			messageBox.getValue().changeText();
+		}
+		this.messengerView.changeText();
 	}
 }
