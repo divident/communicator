@@ -3,6 +3,7 @@ package client.view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -19,11 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import client.ClientLocale;
 import client.controller.Controller;
+import server.util.WebTimeModel;
 
 public class Messenger extends JFrame implements ListSelectionListener {
 	private final static Logger LOGGER = Logger.getLogger(Messenger.class.getName());
@@ -35,9 +38,10 @@ public class Messenger extends JFrame implements ListSelectionListener {
 
 	private JButton chatButton;
 	private JMenuBar menuBar;
-	private JMenu langMenu;
-	private ButtonGroup group;
+	private JMenu langMenu, skinMenu;
+	private ButtonGroup group, skinGroup;
 	private JRadioButtonMenuItem btPl, btEn;
+	private JRadioButtonMenuItem btMetal, btSystem, btOcean;
 
 	public Messenger(Controller controller) {
 		ClientLocale.setLocale("en", "EN");
@@ -54,13 +58,13 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		JScrollPane listScrollPane = new JScrollPane(list);
 
 		this.setJMenuBar(createMenuBar());
-
+		setTitle(WebTimeModel.getCurrentDate());
 		chatButton = new JButton();
 		chatButton.addActionListener(new ChatListener());
 
-		// Create a panel that uses BoxLayout.
 		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.X_AXIS));
+
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));
 		buttonPane.add(chatButton);
 		buttonPane.add(Box.createHorizontalStrut(5));
 		buttonPane.add(Box.createHorizontalStrut(5));
@@ -70,7 +74,9 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		add(chatButton, BorderLayout.PAGE_END);
 		chatButton.setEnabled(false);
 		changeText();
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		new LoginBox(controller);
+
 	}
 
 	class ChatListener implements ActionListener {
@@ -79,16 +85,21 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		}
 
 	}
-	
+
 	public void changeText() {
 		chatButton.setText(ClientLocale.getMessage("btChat"));
 		btPl.setText(ClientLocale.getMessage("plLang"));
 		btEn.setText(ClientLocale.getMessage("enLang"));
 		langMenu.setText(ClientLocale.getMessage("langMenu"));
+		skinMenu.setText(ClientLocale.getMessage("skinMenu"));
+		btMetal.setText(ClientLocale.getMessage("btMetal"));
+		btSystem.setText(ClientLocale.getMessage("btSystem"));
+		btOcean.setText(ClientLocale.getMessage("btOcean"));
 	}
 
 	public JMenuBar createMenuBar() {
 		ActionListener al = new LanguageChange();
+		ActionListener alSkin = new SkinChange();
 		menuBar = new JMenuBar();
 		langMenu = new JMenu();
 		menuBar.add(langMenu);
@@ -103,6 +114,24 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		btPl.addActionListener(al);
 		group.add(btPl);
 		langMenu.add(btPl);
+
+		skinMenu = new JMenu();
+		menuBar.add(skinMenu);
+		skinGroup = new ButtonGroup();
+		btMetal = new JRadioButtonMenuItem();
+		btSystem = new JRadioButtonMenuItem();
+		btOcean = new JRadioButtonMenuItem();
+		skinGroup.add(btMetal);
+		skinGroup.add(btSystem);
+		skinGroup.add(btOcean);
+		btMetal.setSelected(true);
+		skinMenu.add(btMetal);
+		skinMenu.add(btOcean);
+		skinMenu.add(btSystem);
+		btMetal.addActionListener(alSkin);
+		btOcean.addActionListener(alSkin);
+		btSystem.addActionListener(alSkin);
+
 		return menuBar;
 	}
 
@@ -144,6 +173,23 @@ public class Messenger extends JFrame implements ListSelectionListener {
 			getController().changeLanguage();
 		}
 	}
+
+	class SkinChange implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ex) {
+			String theme;
+			if (ex.getSource().equals(btMetal)) {
+				theme =  "metal";
+			} else if(ex.getSource().equals(btOcean)) {
+				theme = "ocean";
+			} else {
+				theme = "test";
+			}
+			getController().changeSkin(theme);
+		}
+	}
+	
+	
 
 	public Controller getController() {
 		return controller;

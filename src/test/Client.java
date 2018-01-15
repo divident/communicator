@@ -3,12 +3,15 @@ package test;
 import java.awt.EventQueue;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+
 import client.controller.Controller;
 import client.model.EstablishConnectionSupport;
 import client.model.JListModel;
 import client.model.ReceiveDataModel;
 import client.model.SendDataModel;
 import client.view.Messenger;
+import server.util.WebTimeModel;
 
 public class Client {
 	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
@@ -29,7 +32,11 @@ public class Client {
 
 		JListModel userListModel = new JListModel();
 		controller.addModel("JListModel", userListModel);
-		
+		try{
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		} catch(Exception e) {
+			
+		}
 		LOGGER.info("Starting client program");
 		
 		Runnable runnable = new Runnable() {

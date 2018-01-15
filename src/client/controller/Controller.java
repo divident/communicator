@@ -7,12 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
+
 import client.model.AbstractModel;
 import client.model.JListModel;
 import client.model.SendDataModel;
 import client.view.LoginBox;
 import client.view.MessageBox;
 import client.view.Messenger;
+import client.view.TestTheme;
 import server.Server;
 import server.beans.Message;
 
@@ -20,7 +27,6 @@ public class Controller implements PropertyChangeListener {
 	private final static Logger LOGGER = Logger.getLogger(Server.class.getName());
 
 	private Map<String, AbstractModel> modelsMap;
-
 	private Map<String, MessageBox> messageBoxesMap;
 	private Messenger messengerView;
 
@@ -95,8 +101,8 @@ public class Controller implements PropertyChangeListener {
 			} else if (messageContent.equals("removeUserFromJList")) {
 				LOGGER.info("User removed from list model");
 				((JListModel) modelsMap.get("JListModel")).removeUser(message);
-			
-			} else if (!nickTo.equals("brak") && !message.getNickFrom().equals("brak")) {
+
+			} else if (!nickTo.equals("empty") && !message.getNickFrom().equals("empty")) {
 				LOGGER.info("Showing message from " + message.getNickFrom());
 				if (messageBoxesMap.containsKey(message.getNickFrom())) {
 
@@ -133,6 +139,7 @@ public class Controller implements PropertyChangeListener {
 			getMessengerView().addUserToTheList(userName);
 
 		} else {
+
 			Message message = (Message) evt.getNewValue();
 			final String text = message.getMessage();
 			final String user = message.getNickFrom();
@@ -152,7 +159,7 @@ public class Controller implements PropertyChangeListener {
 
 	public void receivedLoginData(String userLoginNick, String password) {
 
-		Message message = new Message(password, userLoginNick, "brak");
+		Message message = new Message(password, userLoginNick, "empty");
 		((SendDataModel) modelsMap.get("sendDataModel")).sendData(message);
 	}
 
@@ -161,8 +168,6 @@ public class Controller implements PropertyChangeListener {
 		messengerView.resetList();
 		((JListModel) modelsMap.get("JListModel")).isUserAtTheList(userNick);
 	}
-	
-	
 
 	public void selectedUserFromJList(String username) {
 		LOGGER.info("Opening chat window with " + username);
@@ -192,12 +197,30 @@ public class Controller implements PropertyChangeListener {
 	public void setUserNick(String userNick) {
 		this.userNick = userNick;
 	}
-	
+
 	public void changeLanguage() {
 		this.loginBoxView.changeText();
-		for(Map.Entry<String, MessageBox> messageBox : messageBoxesMap.entrySet()) {
+		for (Map.Entry<String, MessageBox> messageBox : messageBoxesMap.entrySet()) {
 			messageBox.getValue().changeText();
 		}
 		this.messengerView.changeText();
+	}
+
+	public void changeSkin(String theme) {
+		LOGGER.info("Change skin to " + theme);
+		try {
+			if (theme.equals("metal"))
+				MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+			else if (theme.equals("ocean"))
+				MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+			else
+				MetalLookAndFeel.setCurrentTheme(new TestTheme());
+
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			SwingUtilities.updateComponentTreeUI(this.messengerView);
+			//this.messengerView.pack();
+		} catch (Exception ex) {
+			LOGGER.warning("Changing skin failed");
+		}
 	}
 }

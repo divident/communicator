@@ -5,11 +5,6 @@ import java.io.IOException;
 import server.Server;
 
 
-
-
-/*
- *  Opis: Klasa testowa, która uruchamia serwer.
- */
 public class DeployServer {
 
 	public static void main(String[] args) {

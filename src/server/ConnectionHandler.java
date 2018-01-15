@@ -63,7 +63,7 @@ public class ConnectionHandler implements Runnable {
 			isRegistered = loginUser(registrationMessage.getNickFrom(), registrationMessage.getNickTo(), outputObject);
 
 			if (isRegistered == false)
-				outputObject.writeObject(new Message("brak", "brak", "wrongNick"));
+				outputObject.writeObject(new Message("empty", "empty", "wrongNick"));
 			else
 				outputObject.writeObject(
 						new Message(registrationMessage.getMessage(), registrationMessage.getNickFrom(), "uniqueNick"));
@@ -101,7 +101,7 @@ public class ConnectionHandler implements Runnable {
 
 				String nick = entry.getKey();
 
-				outputObject.writeObject(new Message("addNewUser", nick, "brak"));
+				outputObject.writeObject(new Message("addNewUser", nick, "empty"));
 				outputObject.flush();
 			}
 
@@ -109,7 +109,7 @@ public class ConnectionHandler implements Runnable {
 			LOGGER.info("Sending new user to others");
 			for (Map.Entry<String, ObjectOutputStream> entry : usersOutputMap.entrySet())
 				if (!entry.getKey().equals(userNick)) {
-					entry.getValue().writeObject(new Message("addNewUser", userNick, "brak"));
+					entry.getValue().writeObject(new Message("addNewUser", userNick, "empty"));
 					entry.getValue().flush();
 				}
 		}
@@ -142,7 +142,7 @@ public class ConnectionHandler implements Runnable {
 		for (Map.Entry<String, ObjectOutputStream> entry : usersOutputMap.entrySet())
 			if (!entry.getKey().equals(userNick)) {
 				try {
-					entry.getValue().writeObject(new Message(entry.getKey(), userNick, "removeUserFromJTree"));
+					entry.getValue().writeObject(new Message(entry.getKey(), userNick, "removeUserFromJList"));
 					entry.getValue().flush();
 				} catch (IOException e) {
 					LOGGER.warning("Error occured");
