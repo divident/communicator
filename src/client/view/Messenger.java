@@ -49,7 +49,7 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		getController().setMessengerView(this);
 		listModel = new DefaultListModel<>();
 		setSize(240, 360);
-		// Create the list and put it in a scroll pane.
+		
 		list = new JList<>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setSelectedIndex(0);
@@ -168,7 +168,7 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		}
 	}
 
-	class LanguageChange implements ActionListener {
+	private class LanguageChange implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ex) {
 			if (ex.getSource().equals(btPl)) {
@@ -180,7 +180,7 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		}
 	}
 
-	class SkinChange implements ActionListener {
+	private class SkinChange implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ex) {
 			String theme;

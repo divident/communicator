@@ -1,6 +1,7 @@
 package client.controller;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -228,5 +229,10 @@ public class Controller implements PropertyChangeListener {
 		} catch (Exception ex) {
 			LOGGER.warning("Changing skin failed");
 		}
+	}
+	
+	public void closeApplication() {
+		this.loginBoxView.dispose();
+		this.messengerView.dispatchEvent(new WindowEvent(this.messengerView, WindowEvent.WINDOW_CLOSING));
 	}
 }

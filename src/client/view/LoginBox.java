@@ -65,13 +65,20 @@ public class LoginBox extends JDialog {
         btnCancel.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-                dispose();
+            	controller.closeApplication();
             }
         });
         JPanel bp = new JPanel();
         bp.add(btnLogin);
         bp.add(btnCancel);
- 
+        
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            	controller.closeApplication();
+            }
+        });
+        
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
         changeText();
@@ -81,6 +88,8 @@ public class LoginBox extends JDialog {
 		setVisible(true);
         setResizable(false);
     }
+    
+
     
     public void changeText() {
     	btnCancel.setText(ClientLocale.getMessage("btCancel"));

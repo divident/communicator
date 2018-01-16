@@ -5,7 +5,7 @@
 	<clients>20</clients>
 </server>
 <client>
-	<lang>pl</lang>
+	<lang>en</lang>
 	<host>localhost</host>
 </client>
 </config>
