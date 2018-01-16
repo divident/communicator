@@ -48,6 +48,10 @@ public class Controller implements PropertyChangeListener {
 	}
 
 	public void addTextToConversationPanel(String userNickRecipient, String messageText) {
+		if(messageText.equals("") || messageText.equals("\n")) {
+			messageBoxesMap.get(userNickRecipient).eraseMessageJTextPane();
+			return;
+		}
 		LOGGER.info("Sending message to " + userNickRecipient);
 		Message message = new Message(userNickRecipient, userNick, messageText);
 		MessageBox messageBox = messageBoxesMap.get(userNickRecipient);
@@ -218,7 +222,9 @@ public class Controller implements PropertyChangeListener {
 
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 			SwingUtilities.updateComponentTreeUI(this.messengerView);
-			//this.messengerView.pack();
+			for (Map.Entry<String, MessageBox> messageBox : messageBoxesMap.entrySet()) {
+				SwingUtilities.updateComponentTreeUI(messageBox.getValue());
+			}
 		} catch (Exception ex) {
 			LOGGER.warning("Changing skin failed");
 		}

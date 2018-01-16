@@ -2,12 +2,6 @@ package server.beans;
 
 import java.io.Serializable;
 
-/*
- *  Opis klasy: 
- *  Klasa ta ma zadanie opakowywaæ treœæ komunikatu wysy³anego do servera. 
- *  Z punktu widzenia servera przy przekazywaniu wiadomoœci kluczowa jest 
- *  znajomoœæ 'nicku' albo komunikatu 
- */
 @SuppressWarnings("serial")
 public class Message implements Serializable {
 
@@ -18,7 +12,6 @@ public class Message implements Serializable {
 	String message;
 	
 	
-	// Constructor 
 	public Message(String nickTo, String nickFrom, String message) {
 		this.nickTo = nickTo;
 		this.nickFrom = nickFrom;
@@ -26,7 +19,6 @@ public class Message implements Serializable {
 	}
 
 	
-	// Getters 
 	public String getNickTo() {
 		return nickTo;
 	}
@@ -40,7 +32,6 @@ public class Message implements Serializable {
 	}
 
 
-	// Setters 
 	public void setNickTo(String nickTo) {
 		this.nickTo = nickTo;
 	}

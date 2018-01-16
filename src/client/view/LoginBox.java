@@ -26,7 +26,8 @@ public class LoginBox extends JDialog {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
         cs.fill = GridBagConstraints.HORIZONTAL;
- 
+        
+
         lbUsername = new JLabel();
         cs.gridx = 0;
         cs.gridy = 0;
@@ -74,6 +75,7 @@ public class LoginBox extends JDialog {
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
         changeText();
+        setLocationRelativeTo(null);
         pack();
     	setModal(true);                                     
 		setVisible(true);

@@ -28,7 +28,7 @@ public class ReceiveDataModel extends AbstractModel implements Runnable {
 				this.firePropertyChange("newMessageFromReceiveDataModel", null, message);  
 				
 			} catch (Exception e){ 
-				e.printStackTrace();
+				//e.printStackTrace();
 				connectionModel.closeConnection();
 				break;                                                                   
 			}

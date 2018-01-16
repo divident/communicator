@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+<server>
+	<port>8389</port>
+	<clients>20</clients>
+</server>
+<client>
+	<lang>pl</lang>
+	<host>localhost</host>
+</client>
+</config>

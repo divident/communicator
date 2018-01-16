@@ -41,10 +41,10 @@ public class Messenger extends JFrame implements ListSelectionListener {
 	private JMenu langMenu, skinMenu;
 	private ButtonGroup group, skinGroup;
 	private JRadioButtonMenuItem btPl, btEn;
-	private JRadioButtonMenuItem btMetal, btSystem, btOcean;
-
-	public Messenger(Controller controller) {
-		ClientLocale.setLocale("en", "EN");
+	private JRadioButtonMenuItem btMetal, btBlue, btOcean;
+	
+	public Messenger(Controller controller, String locale) {
+		ClientLocale.setLocale(locale.toLowerCase(), locale.toUpperCase());
 		setController(controller);
 		getController().setMessengerView(this);
 		listModel = new DefaultListModel<>();
@@ -57,7 +57,7 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		list.setVisibleRowCount(5);
 		JScrollPane listScrollPane = new JScrollPane(list);
 
-		this.setJMenuBar(createMenuBar());
+		this.setJMenuBar(createMenuBar(locale));
 		setTitle(WebTimeModel.getCurrentDate());
 		chatButton = new JButton();
 		chatButton.addActionListener(new ChatListener());
@@ -74,6 +74,7 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		add(chatButton, BorderLayout.PAGE_END);
 		chatButton.setEnabled(false);
 		changeText();
+		setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		new LoginBox(controller);
 
@@ -93,11 +94,11 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		langMenu.setText(ClientLocale.getMessage("langMenu"));
 		skinMenu.setText(ClientLocale.getMessage("skinMenu"));
 		btMetal.setText(ClientLocale.getMessage("btMetal"));
-		btSystem.setText(ClientLocale.getMessage("btSystem"));
+		btBlue.setText(ClientLocale.getMessage("btBlue"));
 		btOcean.setText(ClientLocale.getMessage("btOcean"));
 	}
 
-	public JMenuBar createMenuBar() {
+	public JMenuBar createMenuBar(String locale) {
 		ActionListener al = new LanguageChange();
 		ActionListener alSkin = new SkinChange();
 		menuBar = new JMenuBar();
@@ -105,7 +106,6 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		menuBar.add(langMenu);
 		group = new ButtonGroup();
 		btEn = new JRadioButtonMenuItem();
-		btEn.setSelected(true);
 		btEn.addActionListener(al);
 		group.add(btEn);
 		langMenu.add(btEn);
@@ -114,23 +114,29 @@ public class Messenger extends JFrame implements ListSelectionListener {
 		btPl.addActionListener(al);
 		group.add(btPl);
 		langMenu.add(btPl);
+		
+		if(locale.equalsIgnoreCase("en")) {
+			btEn.setSelected(true);
+		} else {
+			btPl.setSelected(true);
+		}
 
 		skinMenu = new JMenu();
 		menuBar.add(skinMenu);
 		skinGroup = new ButtonGroup();
 		btMetal = new JRadioButtonMenuItem();
-		btSystem = new JRadioButtonMenuItem();
+		btBlue = new JRadioButtonMenuItem();
 		btOcean = new JRadioButtonMenuItem();
 		skinGroup.add(btMetal);
-		skinGroup.add(btSystem);
+		skinGroup.add(btBlue);
 		skinGroup.add(btOcean);
-		btMetal.setSelected(true);
+		btOcean.setSelected(true);
 		skinMenu.add(btMetal);
 		skinMenu.add(btOcean);
-		skinMenu.add(btSystem);
+		skinMenu.add(btBlue);
 		btMetal.addActionListener(alSkin);
 		btOcean.addActionListener(alSkin);
-		btSystem.addActionListener(alSkin);
+		btBlue.addActionListener(alSkin);
 
 		return menuBar;
 	}

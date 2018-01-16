@@ -4,10 +4,13 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -109,6 +112,28 @@ public class MessageBox extends JFrame {
 		
 		changeText();
 		
+		messageJTextPane.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					LOGGER.info("Sending message to " + userWindowOwner);
+					controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText());
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					messageJTextPane.setText("");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+		});
 	}
 	
 	
@@ -136,7 +161,8 @@ public class MessageBox extends JFrame {
 		setTitle(ClientLocale.getMessage("titMessageBox") + " " + userWindowOwner);
 	}
 	public void addNewMessage(String messageText, String userFrom) {
-		conversationJTextPane.setText(conversationJTextPane.getText() + '\n' + "<" + userFrom + "> " + messageText );
+		conversationJTextPane.setText(conversationJTextPane.getText() + "<" + userFrom + "> " + messageText + "\n");
+		
 	}
 	public void eraseMessageJTextPane(){
 		messageJTextPane.setText("");
@@ -158,6 +184,17 @@ public class MessageBox extends JFrame {
 		setVisible(false);
 		
 	}
+	
+	public class SendAction extends AbstractAction {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			LOGGER.info("Sending message to " + userWindowOwner);
+			controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText()); 
+		}
+		
+	}
+
 }
 
 

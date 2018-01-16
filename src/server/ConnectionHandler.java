@@ -12,20 +12,24 @@ import java.util.logging.Logger;
 
 import server.beans.Message;
 import server.util.Database;
+import server.util.MaxUsersException;
 
 public class ConnectionHandler implements Runnable {
 
 	private final static Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
 	private static Map<String, ObjectOutputStream> usersOutputMap = Collections.synchronizedMap(new HashMap<String, ObjectOutputStream>());
 	private static AtomicInteger usersCount = new AtomicInteger();
-
 	private ObjectInputStream inputObject;
 	private ObjectOutputStream outputObject;
 	private Socket clientSocket;
 	private String userNick;
 
-	public ConnectionHandler(Socket socket) throws IOException {
+	public ConnectionHandler(Socket socket) throws Exception {
 		this.clientSocket = socket;
+		if(ConnectionHandler.getUsersCount().get() > Server.threadsNumber - 1) {
+			socket.close();
+	 		throw new MaxUsersException("Server reached maximum users number");
+	 	}
 		inputObject = new ObjectInputStream(socket.getInputStream());
 		outputObject = new ObjectOutputStream(socket.getOutputStream());
 		usersCount.set(usersCount.get() + 1);
@@ -68,7 +72,7 @@ public class ConnectionHandler implements Runnable {
 				outputObject.writeObject(
 						new Message(registrationMessage.getMessage(), registrationMessage.getNickFrom(), "uniqueNick"));
 
-			outputObject.flush(); // wys³anie danych
+			outputObject.flush();
 
 		} while (isRegistered == false);
 	}
@@ -116,10 +120,6 @@ public class ConnectionHandler implements Runnable {
 		return true;
 	}
 
-	/**
-	 * Close connection with server. Moreover delete all data related to user and
-	 * inform other useres, that user is not connected.
-	 */
 	private void closeClientStreams() {
 		try {
 			inputObject.close();
