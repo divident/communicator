@@ -5,15 +5,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.Provider;
+import java.security.Security;
 import java.util.logging.Logger;
 
-import server.Server;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 public class EstablishConnectionSupport {
 
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private Socket clientSocket;
+	private SSLSocket clientSocket;
+	private SSLSocketFactory sslsocketfactory;
 	private final static Logger LOGGER = Logger.getLogger(EstablishConnectionSupport.class.getName());
 
 	public EstablishConnectionSupport(String host, int port) throws IOException {
@@ -22,10 +26,13 @@ public class EstablishConnectionSupport {
 	}
 
 	private void connectToServer(String host, int port) throws UnknownHostException, IOException {
-		clientSocket = new Socket(host, port);
+		sslsocketfactory  = (SSLSocketFactory) SSLSocketFactory.getDefault();
+		clientSocket = (SSLSocket) sslsocketfactory.createSocket(host, port);
+		clientSocket.setEnabledCipherSuites(sslsocketfactory.getSupportedCipherSuites()); 
 	}
 
 	private void getStreams() throws IOException {
+		
 		out = new ObjectOutputStream(clientSocket.getOutputStream());
 		in = new ObjectInputStream(clientSocket.getInputStream());
 	}

@@ -3,12 +3,13 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+
+import javax.net.ssl.SSLSocket;
 
 import server.beans.Message;
 import server.util.Database;
@@ -21,15 +22,18 @@ public class ConnectionHandler implements Runnable {
 	private static AtomicInteger usersCount = new AtomicInteger();
 	private ObjectInputStream inputObject;
 	private ObjectOutputStream outputObject;
-	private Socket clientSocket;
+	private SSLSocket clientSocket;
 	private String userNick;
 
-	public ConnectionHandler(Socket socket) throws Exception {
+	public ConnectionHandler(SSLSocket socket) throws Exception {
+		System.setProperty("javax.net.ssl.keyStore", "keystore.jks");
+		System.setProperty("javax.net.ssl.keyStorePassword", "123456");
 		this.clientSocket = socket;
 		if(ConnectionHandler.getUsersCount().get() > Server.threadsNumber - 1) {
 			socket.close();
 	 		throw new MaxUsersException("Server reached maximum users number");
 	 	}
+		
 		inputObject = new ObjectInputStream(socket.getInputStream());
 		outputObject = new ObjectOutputStream(socket.getOutputStream());
 		usersCount.set(usersCount.get() + 1);

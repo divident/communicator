@@ -24,6 +24,7 @@ public class SendDataModel extends AbstractModel{
 			out.writeObject(msg);
 			out.flush();
 		} catch (IOException e) {
+			e.printStackTrace();
 			connectionModel.closeConnection();  
 		}
 	}

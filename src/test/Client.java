@@ -18,7 +18,8 @@ public class Client {
 	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	public static void main(String[] args) {
-
+		System.setProperty("javax.net.ssl.trustStore", "keystore.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "123456");
 		final Controller controller = new Controller();
 		ReadXMLFile fmx = new ReadXMLFile();
 		try {
@@ -51,6 +52,7 @@ public class Client {
 			
 		} catch (Exception e) {
 			LOGGER.warning("Failed to start client");
+			e.printStackTrace();
 		}
 	}
 
