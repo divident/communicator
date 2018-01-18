@@ -1,9 +1,10 @@
 package test;
 
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import client.controller.Controller;
@@ -14,10 +15,18 @@ import client.model.SendDataModel;
 import client.view.Messenger;
 import server.util.ReadXMLFile;
 
+
 public class Client {
 	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	public static void main(String[] args) {
+		try {
+			FileHandler fileHandler = new FileHandler("log/client%g.log", 5242880, 5, true);
+			LOGGER.addHandler(fileHandler);
+		} catch (SecurityException | IOException e1) {
+			e1.printStackTrace();
+		}
+
 		System.setProperty("javax.net.ssl.trustStore", "keystore.jks");
 		System.setProperty("javax.net.ssl.trustStorePassword", "123456");
 		final Controller controller = new Controller();

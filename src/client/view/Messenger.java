@@ -27,9 +27,10 @@ import javax.swing.event.ListSelectionListener;
 import client.ClientLocale;
 import client.controller.Controller;
 import server.util.WebTimeModel;
+import test.Client;
 
 public class Messenger extends JFrame implements ListSelectionListener {
-	private final static Logger LOGGER = Logger.getLogger(Messenger.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	private Controller controller;
 

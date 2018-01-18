@@ -11,12 +11,18 @@ import java.util.logging.Logger;
 import server.Server;
 
 public class Database {
-	private final static Logger LOGGER = Logger.getLogger(Database.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Server.class.getName());
 	private Connection connection;
-	private String serverAddres = "jdbc:postgresql://localhost:5432/testdb";
-	private String dbUsername = "postgres";
-	private String dbPassword = "12345";
-
+	private String serverAddres;
+	private String dbUsername;
+	private String dbPassword;
+	
+	public Database() {
+		ReadXMLFile rxf = new ReadXMLFile();
+		serverAddres = rxf.getDatabaseConf("address");
+		dbUsername = rxf.getDatabaseConf("login");
+		dbPassword = rxf.getDatabaseConf("passwd");
+	}
 
 	public boolean checkUser(String username, String password) {
 		connect();

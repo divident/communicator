@@ -8,4 +8,9 @@
 	<lang>en</lang>
 	<host>localhost</host>
 </client>
+<database>
+	<address>jdbc:postgresql://localhost:5432/testdb</address>
+	<login>postgres</login>
+	<passwd>12345</passwd>
+</database>
 </config>

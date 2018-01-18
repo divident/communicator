@@ -21,11 +21,11 @@ import client.view.LoginBox;
 import client.view.MessageBox;
 import client.view.Messenger;
 import client.view.TestTheme;
-import server.Server;
 import server.beans.Message;
+import test.Client;
 
 public class Controller implements PropertyChangeListener {
-	private final static Logger LOGGER = Logger.getLogger(Server.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	private Map<String, AbstractModel> modelsMap;
 	private Map<String, MessageBox> messageBoxesMap;
@@ -48,10 +48,11 @@ public class Controller implements PropertyChangeListener {
 		model.addPropertyChangeListener(this);
 	}
 
-	public void addTextToConversationPanel(String userNickRecipient, String messageText) {
-		if(messageText.equals("") || messageText.equals("\n")) {
-			messageBoxesMap.get(userNickRecipient).eraseMessageJTextPane();
-			return;
+	public void addTextToConversationPanel(String userNickRecipient, String messageText) throws EmptyMessageException, TooLongMessageException  {
+		if(messageText.isEmpty() || messageText.equals("\n")) {
+			throw new EmptyMessageException("Message is empty");
+		} else if(messageText.length() > 200) {
+			throw new TooLongMessageException("Message is too long");
 		}
 		LOGGER.info("Sending message to " + userNickRecipient);
 		Message message = new Message(userNickRecipient, userNick, messageText);

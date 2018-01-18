@@ -5,12 +5,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.Provider;
-import java.security.Security;
 import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+
+import test.Client;
 
 public class EstablishConnectionSupport {
 
@@ -18,7 +18,7 @@ public class EstablishConnectionSupport {
 	private ObjectOutputStream out;
 	private SSLSocket clientSocket;
 	private SSLSocketFactory sslsocketfactory;
-	private final static Logger LOGGER = Logger.getLogger(EstablishConnectionSupport.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	public EstablishConnectionSupport(String host, int port) throws IOException {
 		connectToServer(host, port);

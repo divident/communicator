@@ -43,4 +43,12 @@ public class ReadXMLFile {
 		
 		return eElement.getElementsByTagName(element).item(0).getTextContent();
 	}
+	
+	public String getDatabaseConf(String element) {
+		NodeList nList = doc.getElementsByTagName("database");	
+		Node serverNode = nList.item(0);
+		Element eElement = (Element) serverNode;
+		
+		return eElement.getElementsByTagName(element).item(0).getTextContent();
+	}
 }

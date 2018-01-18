@@ -5,10 +5,11 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import server.beans.Message;
+import test.Client;
 
 public class JListModel extends AbstractModel{
 	private Set<String> usersList;
-	private final static Logger LOGGER = Logger.getLogger(JListModel.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 	public JListModel() {
 		usersList = new HashSet<String>();
 	}

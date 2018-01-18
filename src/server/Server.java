@@ -1,12 +1,9 @@
 package server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.security.Provider;
-import java.security.Security;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import javax.net.ssl.SSLServerSocket;
@@ -58,5 +55,4 @@ public class Server {
 			LOGGER.info("Current users number " + ConnectionHandler.getUsersCount().get());
 		}
 	}
-
 }

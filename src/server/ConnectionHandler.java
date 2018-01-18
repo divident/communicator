@@ -17,7 +17,7 @@ import server.util.MaxUsersException;
 
 public class ConnectionHandler implements Runnable {
 
-	private final static Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Server.class.getName());
 	private static Map<String, ObjectOutputStream> usersOutputMap = Collections.synchronizedMap(new HashMap<String, ObjectOutputStream>());
 	private static AtomicInteger usersCount = new AtomicInteger();
 	private ObjectInputStream inputObject;

@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,10 +21,13 @@ import javax.swing.border.TitledBorder;
 
 import client.ClientLocale;
 import client.controller.Controller;
+import client.controller.EmptyMessageException;
+import client.controller.TooLongMessageException;
+import test.Client;
 
 @SuppressWarnings("serial")
 public class MessageBox extends JFrame {
-	private final static Logger LOGGER = Logger.getLogger(MessageBox.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 	Controller controller;
 	
 	String userWindowOwner;
@@ -118,7 +120,11 @@ public class MessageBox extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					LOGGER.info("Sending message to " + userWindowOwner);
-					controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText());
+					try {
+						controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText());
+					} catch (EmptyMessageException| TooLongMessageException e1) {
+						LOGGER.warning("Message exception " + e1.getMessage());
+					} 
 				}
 			}
 
@@ -142,7 +148,11 @@ public class MessageBox extends JFrame {
 		sendButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				LOGGER.info("Sending message to " + userWindowOwner);
-				controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText()); 
+				try {
+					controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText());
+				} catch (EmptyMessageException| TooLongMessageException e1) {
+					LOGGER.warning("Message exception " + e1.getMessage());
+				} 
 			}
 		});
 		
@@ -182,16 +192,6 @@ public class MessageBox extends JFrame {
 
 	public void turnOffWindow() {
 		setVisible(false);
-		
-	}
-	
-	public class SendAction extends AbstractAction {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			LOGGER.info("Sending message to " + userWindowOwner);
-			controller.addTextToConversationPanel(userWindowOwner, messageJTextPane.getText()); 
-		}
 		
 	}
 

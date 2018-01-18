@@ -4,13 +4,14 @@ import java.io.ObjectInputStream;
 import java.util.logging.Logger;
 
 import server.beans.Message;
+import test.Client;
 
 
 public class ReceiveDataModel extends AbstractModel implements Runnable {
 
 	private EstablishConnectionSupport connectionModel;
 	private ObjectInputStream in;
-	private final static Logger LOGGER = Logger.getLogger(ReceiveDataModel.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 	
 	public ReceiveDataModel(EstablishConnectionSupport connectionModel) {
 		this.connectionModel = connectionModel;

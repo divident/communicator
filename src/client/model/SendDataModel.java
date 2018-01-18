@@ -5,12 +5,13 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Logger;
 
 import server.beans.Message;
+import test.Client;
 
 public class SendDataModel extends AbstractModel{
 
 	private EstablishConnectionSupport connectionModel;
 	private ObjectOutputStream out;
-	private final static Logger LOGGER = Logger.getLogger(SendDataModel.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Client.class.getName());
 
 	public SendDataModel(EstablishConnectionSupport connectionModel) {
 		this.connectionModel = connectionModel;
