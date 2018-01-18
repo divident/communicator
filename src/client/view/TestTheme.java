@@ -2,16 +2,7 @@ package client.view;
 
 import javax.swing.plaf.*;
 import javax.swing.plaf.metal.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
 
-/**
- * This class describes a theme using "primary" colors.
- * You can change the colors to anything else you want.
- *
- * 1.9 07/26/04
- */
 public class TestTheme extends DefaultMetalTheme {
 
     public String getName() { return "Toms"; }
